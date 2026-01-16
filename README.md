@@ -1,4 +1,4 @@
-# Insurance Claim Prediction Project
+# Insurance Claim Prediction 
 
 This project aims to predict whether a building will have at least **one insurance claim during the insured period** using machine learning techniques. The dataset contains features related to buildings, policies, and historical claims. Ensemble models like **Gradient Boosting** and **Random Forest** were applied to identify high-risk buildings and support insurance risk management decisions.
 
@@ -14,11 +14,6 @@ This project aims to predict whether a building will have at least **one insuran
 6. [Evaluation Metrics](#evaluation-metrics)  
 7. [Results and Interpretation](#results-and-interpretation)  
 8. [Hyperparameter Tuning](#hyperparameter-tuning)  
-9. [Usage Instructions](#usage-instructions)  
-10. [Future Improvements](#future-improvements)  
-11. [Repository Structure](#repository-structure)  
-12. [License](#license)  
-13. [References](#references)
 
 ---
 
@@ -73,3 +68,73 @@ Key steps performed:
 4. **Class Imbalance Analysis** – Checked distribution:
    ```python
    df['Claim'].value_counts(normalize=True) * 100
+
+   Result: Minority class (Claim = 1) is underrepresented (~23%).
+
+## Modeling Approach
+
+Models evaluated:
+
+**Logistic Regression** – Baseline model for linear relationships.
+
+**Random Forest Classifier**– Handles non-linear interactions, robust to overfitting.
+
+**Gradient Boosting Classifier** – Best-performing ensemble, emphasizes misclassified examples.
+
+**Key techniques used:**
+
+Sample weighting to address imbalance
+
+Threshold tuning to improve minority-class recall
+
+Cross-validation with stratified splits
+
+## Evaluation Metrics
+
+Because of class imbalance, standard accuracy is not enough. Metrics used:
+
+**Metric	Description**
+Accuracy	Percentage of correct predictions
+Precision	Correct positive predictions / all predicted positives
+Recall	Correct positive predictions / all actual positives
+F1-score	Harmonic mean of precision and recall
+ROC-AUC	Probability-based measure of discriminative power
+Confusion Matrix	True positives, false positives, true negatives, false negatives
+
+## Results and Interpretation
+
+Gradient Boosting Classifier final performance:
+
+Class	Precision	Recall	F1-score	Support
+0	0.84	0.75	0.79	1105
+1	0.38	0.53	0.44	327
+Accuracy			0.70	1432
+ROC-AUC			0.692	
+
+**Interpretation:**
+
+Strong performance on majority class (no claims)
+
+Moderate sensitivity to claims (minority class)
+
+Fair overall discriminative ability (ROC-AUC ≈ 0.69)
+
+Threshold tuning and sample weighting improved minority-class detection
+
+Confusion Matrix:
+
+[[826 279]
+ [154 173]]
+
+## Hyperparameter Tuning
+
+Used GridSearchCV for tuning parameters:
+
+n_estimators, learning_rate, max_depth, min_samples_split, min_samples_leaf, subsample
+
+Sample weighting applied for minority class
+
+Decision threshold lowered (e.g., 0.35) to increase recall for claim cases
+
+Improved Class 1 recall from ~0.50 → ~0.60 without major loss in Class 0 performance
+
