@@ -65,11 +65,21 @@ Key steps performed:
 1. **Handling Missing Values** – Imputed or removed missing entries.  
 2. **Feature Encoding** – Converted categorical variables into numeric format using one-hot or label encoding.  
 3. **Feature Scaling** – Applied StandardScaler for models sensitive to feature magnitude.  
-4. **Class Imbalance Analysis** – Checked distribution:
-   ```python
+4. **Class Imbalance Analysis** –
+   Checked distribution:
    df['Claim'].value_counts(normalize=True) * 100
 
    Result: Minority class (Claim = 1) is underrepresented (~23%).
+
+Checked Claim rate over insured period
+   Bin insured period
+    df['Insured_bin'] = pd.cut(df['Insured_Period'], bins=10)
+    claim_rate = df.groupby('Insured_bin')['Claim'].mean()
+    Result: Buildings insured for a short duration tend to have lower claim probabilities.
+
+Checked Building Dimension vs Insured Period
+    result:Buildings of various sizes are insured for both short and long periods. A few large buildings appear as outliers, especially at longer insured periods.
+
 
 ## Modeling Approach
 
